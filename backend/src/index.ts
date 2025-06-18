@@ -4,7 +4,15 @@ import userRouter from './user';
 import recordRouter from './record';
 
 const app = express();
-app.use(cors());
+
+app.use(cors({
+  origin: [
+    'https://accounting-app-silk.vercel.app',
+    'http://localhost:5173'
+  ],
+  credentials: true
+}));
+
 app.use(express.json());
 
 app.use('/api/user', userRouter);
