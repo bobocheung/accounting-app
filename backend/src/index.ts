@@ -2,6 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import userRouter from './user';
 import recordRouter from './record';
+import accountRouter from './account';
+import categoryRouter from './category';
 
 const app = express();
 
@@ -17,6 +19,8 @@ app.use(express.json());
 
 app.use('/api/user', userRouter);
 app.use('/api/record', recordRouter);
+app.use('/api/account', accountRouter);
+app.use('/api/category', categoryRouter);
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
