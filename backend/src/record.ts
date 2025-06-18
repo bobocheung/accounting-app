@@ -26,15 +26,21 @@ function auth(req: Request, res: Response, next: NextFunction) {
 // 取得所有記帳紀錄
 router.get('/', auth, async (req: Request, res: Response): Promise<void> => {
   const userId = (req as any).userId;
-  const records = await prisma.record.findMany({ where: { userId }, orderBy: { date: 'desc' } });
+  const records = await prisma.record.findMany({
+    where: { userId },
+    include: { category: true, account: true },
+    orderBy: { date: 'desc' }
+  });
   res.json(records);
 });
 
 // 新增記帳
 router.post('/', auth, async (req: Request, res: Response): Promise<void> => {
   const userId = (req as any).userId;
-  const { type, amount, category, date, note } = req.body;
-  const record = await prisma.record.create({ data: { type, amount, category, date: new Date(date), note, userId } });
+  const { type, amount, categoryId, accountId, date, note } = req.body;
+  const record = await prisma.record.create({
+    data: { type, amount, categoryId, accountId, date: new Date(date), note, userId }
+  });
   res.json(record);
 });
 
@@ -42,10 +48,10 @@ router.post('/', auth, async (req: Request, res: Response): Promise<void> => {
 router.put('/:id', auth, async (req: Request, res: Response): Promise<void> => {
   const userId = (req as any).userId;
   const { id } = req.params;
-  const { type, amount, category, date, note } = req.body;
+  const { type, amount, categoryId, accountId, date, note } = req.body;
   const record = await prisma.record.updateMany({
     where: { id: Number(id), userId },
-    data: { type, amount, category, date: new Date(date), note },
+    data: { type, amount, categoryId, accountId, date: new Date(date), note },
   });
   res.json(record);
 });
