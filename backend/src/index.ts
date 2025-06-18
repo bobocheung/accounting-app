@@ -10,6 +10,8 @@ const app = express();
 app.use(cors({
   origin: [
     'https://accounting-app-silk.vercel.app',
+    'https://accounting-app-nbqsh31l-bea95.vercel.app',
+    'https://accounting-app-nbqsh31l-bobos-projects-d97be9a5.vercel.app',
     'http://localhost:5173'
   ],
   credentials: true
