@@ -38,6 +38,10 @@ router.get('/', auth, async (req: Request, res: Response): Promise<void> => {
 router.post('/', auth, async (req: Request, res: Response): Promise<void> => {
   const userId = (req as any).userId;
   const { type, amount, categoryId, accountId, date, note } = req.body;
+  if (!categoryId || !accountId) {
+    res.status(400).json({ error: '請選擇帳戶與分類' });
+    return;
+  }
   const record = await prisma.record.create({
     data: { type, amount, categoryId, accountId, date: new Date(date), note, userId }
   });

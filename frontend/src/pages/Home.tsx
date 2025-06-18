@@ -56,6 +56,10 @@ const Home: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    if (!form.accountId || !form.categoryId) {
+      setError('請選擇帳戶與分類');
+      return;
+    }
     try {
       await api.post('/record', { ...form, amount: Number(form.amount), categoryId: Number(form.categoryId), accountId: Number(form.accountId) });
       setForm({ type: 'expense', amount: '', categoryId: '', accountId: '', date: '', note: '' });
@@ -93,7 +97,7 @@ const Home: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
           </FormControl>
           <TextField label="日期" name="date" type="date" value={form.date} onChange={handleChange} InputLabelProps={{ shrink: true }} />
           <TextField label="備註" name="note" value={form.note} onChange={handleChange} />
-          <Button type="submit" variant="contained">新增</Button>
+          <Button type="submit" variant="contained" disabled={!form.accountId || !form.categoryId}>新增</Button>
         </form>
         {error && <Typography color="error">{error}</Typography>}
       </Paper>
