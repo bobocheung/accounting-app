@@ -53,6 +53,11 @@ const Home: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
     setForm({ ...form, [name as string]: value });
   };
 
+  const handleSelectChange = (e: any) => {
+    const { name, value } = e.target;
+    setForm({ ...form, [name]: value });
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
@@ -83,15 +88,15 @@ const Home: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
             <MenuItem value="transfer">轉帳</MenuItem>
           </TextField>
           <TextField label="金額" name="amount" value={form.amount} onChange={handleChange} type="number" />
-          <FormControl sx={{ minWidth: 120 }}>
+          <FormControl sx={{ minWidth: 120 }} required>
             <InputLabel>帳戶</InputLabel>
-            <Select label="帳戶" name="accountId" value={form.accountId} onChange={handleChange}>
+            <Select label="帳戶" name="accountId" value={form.accountId} onChange={handleSelectChange} required>
               {accounts.map(acc => <MenuItem key={acc.id} value={acc.id}>{acc.icon} {acc.name}</MenuItem>)}
             </Select>
           </FormControl>
-          <FormControl sx={{ minWidth: 120 }}>
+          <FormControl sx={{ minWidth: 120 }} required>
             <InputLabel>分類</InputLabel>
-            <Select label="分類" name="categoryId" value={form.categoryId} onChange={handleChange}>
+            <Select label="分類" name="categoryId" value={form.categoryId} onChange={handleSelectChange} required>
               {categories.filter(c => c.type === form.type).map(cat => <MenuItem key={cat.id} value={cat.id}>{cat.name}</MenuItem>)}
             </Select>
           </FormControl>
